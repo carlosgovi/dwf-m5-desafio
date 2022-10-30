@@ -31,14 +31,22 @@ const routes = [
     component: initPageResultadoEmpataste,
   },
 ];
+const BASE_PATH = "/desafio-m5";
+
+function isGithubPages() {
+  return location.host.includes("github.io");
+}
 export function initRouter(container: any) {
   function goTo(path) {
-    history.pushState({}, "", path);
-    handleRoute(path);
+    ////primera solucion al problema de las rutas en github pages
+    const completePath = isGithubPages() ? BASE_PATH + path : path;
+    history.pushState({}, "", completePath);
+    handleRoute(completePath);
   }
   function handleRoute(route) {
     console.log("El router recibio una nueva ruta y esta es:::  ", route);
-
+    ///// ////segunda solucion al problema de las rutas en github pages
+    const newRoute = isGithubPages() ? route.replace(BASE_PATH, "") : route;
     ////for q recorre rutas y compara las regular exprecions
     for (const r of routes) {
       if (r.path.test(route)) {
@@ -52,7 +60,9 @@ export function initRouter(container: any) {
     }
   }
   /// si en la ruta hay una sola "/" goto me lleva a Welcome
-  if (location.pathname == "/") {
+  if (location.host.includes("github.io")) {
+    goTo("/welcome");
+  } else if (location.pathname == "/") {
     goTo("/welcome");
   } else {
     //handleRoute inicializa y  pasa el path asi misma
