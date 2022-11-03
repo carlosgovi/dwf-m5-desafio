@@ -14,7 +14,6 @@ export function initScoreCardComp() {
         const style = document.createElement("style");
 
         const stados = state.getState();
-        console.log(stados);
 
         div.innerHTML = `
          <div class="card">

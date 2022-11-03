@@ -1,8 +1,10 @@
 const state = {
   //donde guardo los datos
   data: {
-    player: 0,
-    pc: 0,
+    score: {
+      player: 0,
+      pc: 0,
+    },
   },
   // escuchador listeners
   listeners: [],

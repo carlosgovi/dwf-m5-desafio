@@ -49,7 +49,7 @@ export function initRouter(container: any) {
     const newRoute = isGithubPages() ? route.replace(BASE_PATH, "") : route;
     ////for q recorre rutas y compara las regular exprecions
     for (const r of routes) {
-      if (r.path.test(route)) {
+      if (r.path.test(newRoute)) {
         const el = r.component({ goTo: goTo });
 
         if (container.firstChild) {

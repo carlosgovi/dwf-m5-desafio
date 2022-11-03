@@ -3,34 +3,35 @@ import { state } from "../../state";
 export function initPagePlay(params) {
   const div = document.createElement("div");
   div.innerHTML = ` 
-      <div class="continer">
+      <div class="conteiner">
       <div class="contador">
       
       </div>
-        <div class="manos">
-        <div>
-        <mano-piedra class="mano piedra">
-        </mano-piedra >
-        <mano-papel class="mano papel">
-        </mano-papel>
-        <mano-tijera class="mano tijera">
-        </mano-tijera>
-        </div>
+           
+      <div class="manos">
+      <div>
+      <mano-piedra class="mano piedra">
+      </mano-piedra >
+      <mano-papel class="mano papel">
+      </mano-papel>
+      <mano-tijera class="mano tijera">
+      </mano-tijera>
+      </div>
       </div>
           `;
   const style = document.createElement("style");
   style.textContent = `
-      .continer{
+      .conteiner{
         box-sizing: border-box;
         margin: 0;
         padding: 0;
-        height: 100vh;
+        height: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
       }
       .contador{
-        margin-top:30px;
+        margin-top:5px;
           display: flex;   
           flex-direction: column;
           justify-content: center;
@@ -45,17 +46,51 @@ export function initPagePlay(params) {
         height:50vh;
           display:flex;
           align-items: flex-end;   
-          padding: 12vh 0 0 0;
+          padding: 5vh 0 0 0;
+             
       }
       .mano{
-        margin:0  20px;      
+        margin:0  20px;
+        
+        
       }
-      .selec {
+      .selec_player {
         transform: scale(1.5,1.5);
-          transition: all 1.5s;
+          transition: all 0.5s;
           display:inline-flex;
+          border-radius: 43px 42px 43px 43px;
+          -moz-border-radius: 43px 42px 43px 43px;
+          -webkit-border-radius: 43px 42px 43px 43px;
+          border: 5px dashed #8ac1eb;
+        }
+        .selec_pc {
+          transform: scale(1.5,1.5);
+            transition: all 0.5s;
+            display:inline-flex;
+            border-radius: 43px 42px 43px 43px;
+            -moz-border-radius: 43px 42px 43px 43px;
+            -webkit-border-radius: 43px 42px 43px 43px;
+            border: 5px dashed #eb8a97;
+        }
+        .selec_misma_opcion{
+          transform: scale(1.5,1.5);
+          transition: all 0.5s;
+          display:inline-flex;
+          background: rgba(52,185,247,1);
+          background: -moz-linear-gradient(left, rgba(52,185,247,1) 0%, rgba(240,47,23,1) 54%, rgba(246,41,12,1) 54%, rgba(231,56,39,1) 100%);
+          background: -webkit-gradient(left top, right top, color-stop(0%, rgba(52,185,247,1)), color-stop(54%, rgba(240,47,23,1)), color-stop(54%, rgba(246,41,12,1)), color-stop(100%, rgba(231,56,39,1)));
+          background: -webkit-linear-gradient(left, rgba(52,185,247,1) 0%, rgba(240,47,23,1) 54%, rgba(246,41,12,1) 54%, rgba(231,56,39,1) 100%);
+          background: -o-linear-gradient(left, rgba(52,185,247,1) 0%, rgba(240,47,23,1) 54%, rgba(246,41,12,1) 54%, rgba(231,56,39,1) 100%);
+          background: -ms-linear-gradient(left, rgba(52,185,247,1) 0%, rgba(240,47,23,1) 54%, rgba(246,41,12,1) 54%, rgba(231,56,39,1) 100%);
+          background: linear-gradient(to right, rgba(52,185,247,1) 0%, rgba(240,47,23,1) 54%, rgba(246,41,12,1) 54%, rgba(231,56,39,1) 100%);
+          filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#34b9f7', endColorstr='#e73827', GradientType=1 );
         }
 
+
+            
+
+      
+        
       `;
   ////juego random
   const computerSelec = () => {
@@ -68,38 +103,63 @@ export function initPagePlay(params) {
   let computadora = computerSelec();
   let player;
   //////
+
   const selecPiedra: any = div.querySelector(".piedra");
   selecPiedra.addEventListener("click", () => {
     player = "piedra";
-    selecPiedra.classList.add("selec");
+    selecPiedra.classList.add("selec_player");
+    ///render del selec pc
+    setTimeout(() => {
+      if (computadora == "piedra") {
+        selecPiedra.classList.add("selec_misma_opcion");
+      }
+      if (computadora == "papel") {
+        selecPapel.classList.add("selec_pc");
+      }
+      if (computadora == "tijera") {
+        selecTijera.classList.add("selec_pc");
+      }
+    }, 200);
   });
   //////////
   const selecPapel: any = div.querySelector(".papel");
   selecPapel.addEventListener("click", () => {
     player = "papel";
-    selecPapel.classList.add("selec");
+    selecPapel.classList.add("selec_player");
+    ///render del selec pc
+    setTimeout(() => {
+      if (computadora == "piedra") {
+        selecPiedra.classList.add("selec_pc");
+      }
+      if (computadora == "papel") {
+        selecPapel.classList.add("selec_misma_opcion");
+      }
+      if (computadora == "tijera") {
+        selecTijera.classList.add("selec_pc");
+      }
+    }, 500);
   });
   ///////
   const selecTijera: any = div.querySelector(".tijera");
   selecTijera.addEventListener("click", () => {
     player = "tijera";
-    selecTijera.classList.add("selec");
+    selecTijera.classList.add("selec_player");
+    ///render del selec pc
+    setTimeout(() => {
+      if (computadora == "piedra") {
+        selecPiedra.classList.add("selec_pc");
+      }
+      if (computadora == "papel") {
+        selecPapel.classList.add("selec_pc");
+      }
+      if (computadora == "tijera") {
+        selecTijera.classList.add("selec_misma_opcion");
+      }
+    }, 500);
   });
 
-  ///render del selec pc
-  setTimeout(() => {
-    if (computadora == "piedra") {
-      selecPiedra.classList.add("selec");
-    }
-    if (computadora == "papel") {
-      selecPapel.classList.add("selec");
-    }
-    if (computadora == "tijera") {
-      selecTijera.classList.add("selec");
-    }
-  }, 3000);
   /////////////////////contador con intervalos
-  let contador = 3;
+  let contador = 6;
   const intervalo: any = setInterval(() => {
     contador--;
     const contadorEl = div.querySelector(".contador") as any;
@@ -140,6 +200,7 @@ export function initPagePlay(params) {
       saveScore();
     }
   };
+  ///////logica de los resultados
   setTimeout(() => {
     console.log("player::", player, "-pc::", computadora);
     ///////piedra
@@ -190,7 +251,7 @@ export function initPagePlay(params) {
     console.log("estado ::::State::::::::::", state.getState());
     const datosLocal: any = localStorage.getItem("scoreData");
     console.log("estado::::local::::::::", JSON.parse(datosLocal));
-  }, 3500);
+  }, 6000);
 
   div.appendChild(style);
   return div;
