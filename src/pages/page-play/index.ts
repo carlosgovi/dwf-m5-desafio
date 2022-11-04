@@ -103,60 +103,93 @@ export function initPagePlay(params) {
   let computadora = computerSelec();
   let player;
   //////
-
-  const selecPiedra: any = div.querySelector(".piedra");
-  selecPiedra.addEventListener("click", () => {
+  const piedraClick = function () {
     player = "piedra";
     selecPiedra.classList.add("selec_player");
+    /////prueba para sacar el listener de piedra
+    selecPapel.removeEventListener("click", papelClick, false);
+    selecTijera.removeEventListener("click", tijeraClick, false);
+    ///retirar class para que no se pueda seguir seleccionando
+    let Papel: any = div.querySelector(".papel");
+    Papel.classList.remove("selec_player");
+    let Tijera: any = div.querySelector(".tijera");
+    Tijera.classList.remove("selec_player");
+    ////
     ///render del selec pc
-    setTimeout(() => {
-      if (computadora == "piedra") {
-        selecPiedra.classList.add("selec_misma_opcion");
-      }
-      if (computadora == "papel") {
-        selecPapel.classList.add("selec_pc");
-      }
-      if (computadora == "tijera") {
-        selecTijera.classList.add("selec_pc");
-      }
-    }, 200);
-  });
-  //////////
-  const selecPapel: any = div.querySelector(".papel");
-  selecPapel.addEventListener("click", () => {
+
+    if (computadora == player) {
+      selecPiedra.classList.add("selec_misma_opcion");
+    }
+    if (computadora == "papel") {
+      selecPapel.classList.add("selec_pc");
+      selecPapel.classList.remove("selec_misma_opcion");
+    }
+    if (computadora == "tijera") {
+      selecTijera.classList.add("selec_pc");
+      selecTijera.classList.remove("selec_misma_opcion");
+    }
+  };
+  const papelClick = function () {
     player = "papel";
+    /////prueba para sacar el listener de piedra
+    selecPiedra.removeEventListener("click", piedraClick, false);
+    selecTijera.removeEventListener("click", tijeraClick, false);
     selecPapel.classList.add("selec_player");
+    ///retirar class para que no se pueda seguir seleccionando
+    let Piedra: any = div.querySelector(".piedra");
+    Piedra.classList.remove("selec_player");
+    let Tijera: any = div.querySelector(".tijera");
+    Tijera.classList.remove("selec_player");
+    ////
     ///render del selec pc
-    setTimeout(() => {
-      if (computadora == "piedra") {
-        selecPiedra.classList.add("selec_pc");
-      }
-      if (computadora == "papel") {
-        selecPapel.classList.add("selec_misma_opcion");
-      }
-      if (computadora == "tijera") {
-        selecTijera.classList.add("selec_pc");
-      }
-    }, 500);
-  });
-  ///////
-  const selecTijera: any = div.querySelector(".tijera");
-  selecTijera.addEventListener("click", () => {
+
+    if (computadora == "piedra") {
+      selecPiedra.classList.add("selec_pc");
+      selecPiedra.classList.remove("selec_misma_opcion");
+    }
+    if (computadora == player) {
+      selecPapel.classList.add("selec_misma_opcion");
+    }
+    if (computadora == "tijera") {
+      selecTijera.classList.add("selec_pc");
+      selecTijera.classList.remove("selec_misma_opcion");
+    }
+  };
+  const tijeraClick = function () {
     player = "tijera";
     selecTijera.classList.add("selec_player");
+    /////prueba para sacar el listener de piedra
+    selecPapel.removeEventListener("click", papelClick, false);
+    selecPiedra.removeEventListener("click", piedraClick, false);
+    ///retirar class para que no se pueda seguir seleccionando
+    let Papel: any = div.querySelector(".papel");
+    Papel.classList.remove("selec_player");
+    let Piedra: any = div.querySelector(".piedra");
+    Piedra.classList.remove("selec_player");
+    ////
     ///render del selec pc
-    setTimeout(() => {
-      if (computadora == "piedra") {
-        selecPiedra.classList.add("selec_pc");
-      }
-      if (computadora == "papel") {
-        selecPapel.classList.add("selec_pc");
-      }
-      if (computadora == "tijera") {
-        selecTijera.classList.add("selec_misma_opcion");
-      }
-    }, 500);
-  });
+
+    if (computadora == "piedra") {
+      selecPiedra.classList.add("selec_pc");
+      selecPiedra.classList.remove("selec_misma_opcion");
+    }
+    if (computadora == "papel") {
+      selecPapel.classList.add("selec_pc");
+      selecPapel.classList.remove("selec_misma_opcion");
+    }
+    if (computadora == player) {
+      selecTijera.classList.add("selec_misma_opcion");
+    }
+  };
+
+  const selecPiedra: any = div.querySelector(".piedra");
+  selecPiedra.addEventListener("click", piedraClick, false);
+  //////////
+  const selecPapel: any = div.querySelector(".papel");
+  selecPapel.addEventListener("click", papelClick, false);
+  ///////
+  const selecTijera: any = div.querySelector(".tijera");
+  selecTijera.addEventListener("click", tijeraClick, false);
 
   /////////////////////contador con intervalos
   let contador = 6;
@@ -172,6 +205,20 @@ export function initPagePlay(params) {
       }
     }
   }, 1000);
+
+  ////////
+  /*  init() {
+    //? Recupera la data almacenada en localStorage.
+    const localData = JSON.parse(localStorage.getItem("game-state-cache"));
+    //? Si no se encuentran data, frena el proceso.
+    if (!localData) {
+      return;
+    } else {
+      //? Si encuentra data, sobreescribe la data del state.
+      this.setState(localData);
+    }
+  }, */
+  //////
   /////guardardatos en local
   const saveScore = () => {
     const currentStateData = state.getState();
@@ -180,24 +227,50 @@ export function initPagePlay(params) {
   ///si los datos existen o no
   const existenciaDeLocalDataPlayer = () => {
     if (!localStorage.getItem("scoreData")) {
-      let currentState = state.getState();
-      state.setState({ ...currentState, player: currentState.player + 1 });
+      console.log("no hay local");
+
+      let currentState = state.getState().score;
+
+      state.setState({
+        ...currentState,
+        player: currentState.player + 1,
+      });
       saveScore();
     } else {
       let currentState = JSON.parse(localStorage.getItem("scoreData") as any);
-      state.setState({ ...currentState, player: currentState.player + 1 });
+      state.setState({
+        ...currentState,
+        player: currentState.player + 1,
+      });
       saveScore();
     }
   };
   const existenciaDeLocalDataPc = () => {
     if (!localStorage.getItem("scoreData")) {
-      let currentState = state.getState();
-      state.setState({ ...currentState, pc: currentState.pc + 1 });
+      console.log("no hay local");
+      let currentState = state.getState().score;
+
+      state.setState({
+        ...currentState,
+        pc: currentState.pc + 1,
+      });
       saveScore();
     } else {
       let currentState = JSON.parse(localStorage.getItem("scoreData") as any);
-      state.setState({ ...currentState, pc: currentState.pc + 1 });
+      state.setState({
+        ...currentState,
+        pc: currentState.pc + 1,
+      });
       saveScore();
+    }
+  };
+  const existenciaDeLocalDataEmpate = () => {
+    if (!localStorage.getItem("scoreData")) {
+      console.log("no hay local");
+      const currentStateScore = state.getState();
+      const currentStateData = state.getState().score;
+      state.setState({ ...currentStateScore.score });
+      localStorage.setItem("scoreData", JSON.stringify(currentStateData));
     }
   };
   ///////logica de los resultados
@@ -206,6 +279,7 @@ export function initPagePlay(params) {
     ///////piedra
     if (player == "piedra" && computadora == "piedra") {
       console.log("empate");
+      existenciaDeLocalDataEmpate();
       params.goTo("/empate");
     }
     if (player == "piedra" && computadora == "tijera") {
@@ -221,6 +295,7 @@ export function initPagePlay(params) {
     ///////papel
     if (player == "papel" && computadora == "papel") {
       console.log("empate");
+      existenciaDeLocalDataEmpate();
       params.goTo("/empate");
     }
     if (player == "papel" && computadora == "tijera") {
@@ -246,6 +321,7 @@ export function initPagePlay(params) {
     }
     if (player == "tijera" && computadora == "tijera") {
       console.log("empate");
+      existenciaDeLocalDataEmpate();
       params.goTo("/empate");
     }
     console.log("estado ::::State::::::::::", state.getState());
